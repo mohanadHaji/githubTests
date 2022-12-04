@@ -1,0 +1,17 @@
+{
+  "name": "githubtests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.28.1",
+    "@types/uuid": "^9.0.0"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}
