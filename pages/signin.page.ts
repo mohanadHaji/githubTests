@@ -21,12 +21,15 @@ export default class signinPage
         await this.utils.goto(commonData.gitHubUrl + signinPageData.signinUrl, signinPageSelectors.emailSelector);
     }
 
-    async signin(email : string, password : string) : Promise<void>
+    async signin(email : string, password : string, saveContext : boolean = true) : Promise<void>
     {
         await this.utils.fill(signinPageSelectors.emailSelector, email);
         await this.utils.fill(signinPageSelectors.passwordSelector, password);
         await this.utils.click(signinPageSelectors.signinButtonSelector, mainPageSelectors.feedbackButton, stateEnum.attached);
-        await this.utils.saveContext(commonData.storageStateFileName)
+        if(saveContext)
+        {
+            await this.utils.saveContext(commonData.storageStateFileName)
+        }
     }
 
     async signout() : Promise<void>

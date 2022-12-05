@@ -7,11 +7,12 @@ import { repoPageData } from "../Data/repoPage.data";
 import signinPage from "./signin.page";
 import { operations } from "../enums/operations.enum";
 import { stateEnum } from "../enums/state.enum";
+import { profilePage } from "./profile.page";
 
 export class repoPage
 {
     private readonly utils : utils
-
+    
     constructor(page : Page)
     {
         this.utils = factory.initUtils(page);
@@ -42,6 +43,6 @@ export class repoPage
 
         isPublic ? await this.utils.click(repoPageSelectors.repository_visibility_public) :
         await this.utils.click(repoPageSelectors.repository_visibility_private);
-        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab, stateEnum.visible, 8000)
+        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab, stateEnum.visible, 8000);
     }
 }

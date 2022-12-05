@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import deletePage from "./pages/delete.page";
 import mainPage from "./pages/main.page";
+import { profilePage } from "./pages/profile.page";
 import { repoPage } from "./pages/repo.page";
 import signinPage from "./pages/signin.page";
 import { utils } from "./Utils/utils";
@@ -12,9 +13,14 @@ class Factory
         return new utils(page)
     }
 
-    initMainPage(page : Page)
+    initMainPage(page : Page) : mainPage
     {
         return new mainPage(page);
+    }
+
+    initProfilePage(page : Page) : profilePage
+    {
+        return new profilePage(page);
     }
     
     initSigninPage(page : Page) : signinPage

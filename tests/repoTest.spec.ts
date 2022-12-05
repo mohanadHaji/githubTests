@@ -7,12 +7,15 @@ import signinPage from '../pages/signin.page';
 import { signinPageData } from '../Data/signinPage.data';
 import { utils } from '../Utils/utils';
 import { commonData } from '../Data/common.data';
+import { profilePage } from '../pages/profile.page';
 
 test.describe('create repo tests', () =>
 {    
     let page : Page;
     let repoPage : repoPage;
     let signinPage : signinPage;
+    let profilePage : profilePage
+    let previousNumberOfRepo : number;
     const guid: string = uuid();
 
     test.beforeAll(async ({browser}) =>
@@ -21,7 +24,11 @@ test.describe('create repo tests', () =>
         page = await context.newPage();
         repoPage = factory.initRepoPage(page);
         signinPage = factory.initSigninPage(page);
+        profilePage = factory.initProfilePage(page);
 
+
+        await profilePage.gotoProfilePage(commonData.accountName);
+        previousNumberOfRepo = await profilePage.getNumberOfRepos();
         await repoPage.gotoCreateRepoPage(signinPage, signinPageData.email, signinPageData.password);
     });
     
@@ -29,7 +36,12 @@ test.describe('create repo tests', () =>
     {
         var repoName = repoPageData.newRepoName + guid;
         await repoPage.createRepo(repoName, repoPageData.descrption);
-        await expect(page).toHaveURL(new RegExp(repoName))
+        await expect(page).toHaveURL(new RegExp(repoName));
+
+        await utils.sleep(2);
+        await profilePage.gotoProfilePage(commonData.accountName);
+        let currentNumberOfRepo : number = await profilePage.getNumberOfRepos();
+        expect(currentNumberOfRepo).toBe(previousNumberOfRepo + 1);
     });
 
     test.afterAll(async () =>
