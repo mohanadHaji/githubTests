@@ -1,4 +1,6 @@
-import { Browser, Locator, Page } from "@playwright/test";
+import { Browser, BrowserContext, Locator, Page } from "@playwright/test";
+import { operations } from "../enums/operations.enum";
+import { stateEnum } from "../enums/state.enum";
 
 export class utils
 {
@@ -9,18 +11,27 @@ export class utils
         this.page = page;
     }
 
-    async goto(url : string, nextSelector : string, timeout? : number) : Promise<void>
+    async goto(url : string, nextSelector : string, operation : operations.visible | operations.waitFor = operations.waitFor, timeout? : number) : Promise<boolean>
     {
         await this.page.goto(url)
-        await this.page.waitForSelector(nextSelector, { state : 'attached', timeout : timeout})
+        if(operation === operations.waitFor)
+        {
+            await this.page.waitForSelector(nextSelector, { state : stateEnum.attached, timeout : timeout})
+        }
+        else
+        {
+            await this.page.goto(url)
+            return await this.isLocatorVisible(nextSelector)
+        }
+
+        return true;
     }
 
-    async gotoAndCheckForSelector(url : string, nextSelector : string) : Promise<boolean>
+    async isLocatorVisible(selector : string) : Promise<boolean>
     {
-        await this.page.goto(url)
-        return await (await this.locator(nextSelector)).isVisible()
+        return await (await this.locator(selector)).isVisible();
     }
-
+    
     async locator(selector : string) : Promise<Locator>
     {
         return await this.page.locator(selector);
@@ -31,22 +42,22 @@ export class utils
         await (await this.locator(selector)).fill(data);
     }
 
-    async click(selector : string, nextSelector? : string, nextState? : "attached" | "visible", timeout? : number) : Promise<void>
+    async click(selector : string, nextSelector? : string, nextState? : stateEnum.attached| stateEnum.visible, timeout? : number) : Promise<void>
     {
         await (await this.locator(selector)).click();
         if (nextSelector != null)
         {
-            await this.page.waitForSelector(nextSelector, { state: nextState === null ? 'visible' : nextState, timeout : timeout})
+            await this.page.waitForSelector(nextSelector, { state: nextState === null ? stateEnum.visible : nextState, timeout : timeout})
         }
     }
 
-    async clickLocator(locator : Locator, nextSelector? : string, nextState? : "attached" | "visible", timeout? : number) : Promise<void>
+    async clickLocator(locator : Locator, nextSelector? : string, nextState? : stateEnum.attached| stateEnum.visible, timeout? : number) : Promise<void>
     {
         await locator.click();
         
         if (nextSelector != null)
         {
-            await this.page.waitForSelector(nextSelector, { state: nextState === null ? 'visible' : nextState, timeout : timeout})
+            await this.page.waitForSelector(nextSelector, { state: nextState === null ? stateEnum.visible : nextState, timeout : timeout})
         }
     }
 
@@ -59,5 +70,15 @@ export class utils
     async getByText(selector : string) : Promise<Locator>
     {
         return await this.page.getByText(selector);
+    }
+
+    async saveContext(storageName : string)
+    {
+        await (await this.page.context()).storageState({path : storageName});;
+    }
+
+    static async getContext(browser : Browser, storageName : string) : Promise<BrowserContext>
+    {
+        return await browser.newContext({storageState : storageName});
     }
 }

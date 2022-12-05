@@ -5,6 +5,8 @@ import { repoPageSelectors } from "../selectors/repoPage.selectors";
 import { commonData } from "../Data/common.data";
 import { repoPageData } from "../Data/repoPage.data";
 import signinPage from "./signin.page";
+import { operations } from "../enums/operations.enum";
+import { stateEnum } from "../enums/state.enum";
 
 export class repoPage
 {
@@ -22,7 +24,7 @@ export class repoPage
 
     async gotoCreateRepoPage(signinPage : signinPage, email : string, password : string) : Promise<void>
     {
-        if(!await this.utils.gotoAndCheckForSelector(commonData.gitHubUrl + repoPageData.newRepoUrl, repoPageSelectors.newRepoNameSelector))
+        if(!await this.utils.goto(commonData.gitHubUrl + repoPageData.newRepoUrl, repoPageSelectors.newRepoNameSelector, operations.visible))
         {
             await signinPage.gotoSigninPage();
             await signinPage.signin(email, password);
@@ -40,6 +42,6 @@ export class repoPage
 
         isPublic ? await this.utils.click(repoPageSelectors.repository_visibility_public) :
         await this.utils.click(repoPageSelectors.repository_visibility_private);
-        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab, 'visible', 8000)
+        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab, stateEnum.visible, 8000)
     }
 }

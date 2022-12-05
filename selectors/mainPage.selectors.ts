@@ -1,4 +1,5 @@
 export const mainPageSelectors =
 {
-    createNewRepoButton: 'button.btn-sm',
+    feedbackButton: '#feed-next',
+    userAvatar: '[aria-label="View profile and more"]'
 }

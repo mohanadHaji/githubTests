@@ -1,10 +1,12 @@
-import { test, expect, Page, Browser, BrowserContext } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { factory } from '../factory';
 import { v4 as uuid } from 'uuid';
 import { repoPage } from '../pages/repo.page';
 import { repoPageData } from '../Data/repoPage.data';
 import signinPage from '../pages/signin.page';
 import { signinPageData } from '../Data/signinPage.data';
+import { utils } from '../Utils/utils';
+import { commonData } from '../Data/common.data';
 
 test.describe('create repo tests', () =>
 {    
@@ -15,7 +17,7 @@ test.describe('create repo tests', () =>
 
     test.beforeAll(async ({browser}) =>
     {
-        var context = await browser.newContext({storageState : 'state.json'})
+        var context = await utils.getContext(browser, commonData.storageStateFileName);
         page = await context.newPage();
         repoPage = factory.initRepoPage(page);
         signinPage = factory.initSigninPage(page);
