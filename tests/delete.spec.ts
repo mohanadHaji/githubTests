@@ -27,7 +27,6 @@ test.describe('delete repo', () =>
         page = await context.newPage();
         repoPage = factory.initRepoPage(page);
         signinPage = factory.initSigninPage(page);
-        // console.log('------------------------- null' + signinPage === null + '   undefined ' + signinPage === undefined);
         await repoPage.gotoCreateRepoPage(signinPage, signinPageData.email, signinPageData.password);
         util = factory.initUtils(page);
         deletePage = factory.initDeletePage(page);
