@@ -1,5 +1,4 @@
-export const enum operations
-{
+export const enum operations {
     visible,
     waitFor
 }

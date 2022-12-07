@@ -1,28 +1,32 @@
 import { test, expect, Page, BrowserContext } from '@playwright/test';
-import { commonData } from '../Data/common.data';
 import { signinPageData } from '../Data/signinPage.data';
 import { factory } from '../factory';
+import mainPage from '../pages/main.page';
 import signinPage from '../pages/signin.page';
 
-test.describe('signin', () =>
-{
-    let page : Page;
-    let signinPage : signinPage;
-    test.beforeAll(async ({browser}) =>
-    {
-        page = await browser.newPage();
+test.describe('signin', () => {
+    let page: Page;
+    let signinPage: signinPage;
+    let mainPage: mainPage
+
+    test.beforeAll(async ({ browser }) => {
+        const context = await browser.newContext();
+        page = await context.newPage();
+        await context.clearCookies();
+
         signinPage = factory.initSigninPage(page);
-        await signinPage.gotoSigninPage();
-        
+        mainPage = factory.initMainPage(page);
+
+        await mainPage.loadMainPage(false);
+        await mainPage.gotoSigninPage();
     });
-    test('test signin functionality', async () => 
-    {
-        await signinPage.signin(signinPageData.email, signinPageData.password);
+
+    test('test signin functionality', async () => {
+        await signinPage.signin(signinPageData.email, signinPageData.password, false);
         await expect(page).toHaveTitle('GitHub');
     });
 
-    test.afterAll(async () =>
-    {
+    test.afterAll(async () => {
         await page.close();
     })
 })

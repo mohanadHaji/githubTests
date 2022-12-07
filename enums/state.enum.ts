@@ -1,5 +1,4 @@
-export const enum stateEnum
-{
+export const enum stateEnum {
     attached = 'attached',
     visible = 'visible'
 }

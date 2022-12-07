@@ -1,5 +1,4 @@
-import { test,  Page, expect } from "@playwright/test";
-import deletePage from "../pages/delete.page";
+import { test, Page, expect } from "@playwright/test";
 import { utils } from "../Utils/utils";
 import { v4 as uuid } from 'uuid';
 import { factory } from "../factory";
@@ -8,40 +7,36 @@ import { commonData } from "../Data/common.data";
 import { userProfilePageSelectors } from "../selectors/userProfile.selectors";
 import { repoPage } from "../pages/repo.page";
 import { repoPageData } from "../Data/repoPage.data";
-import signinPage from "../pages/signin.page";
-import { signinPageData } from "../Data/signinPage.data";
+import mainPage from "../pages/main.page";
 
-test.describe('delete repo', () =>
-{
-    let page : Page;
-    let deletePage : deletePage;
-    let util : utils;
-    let repoPage : repoPage;
-    let signinPage : signinPage;
+test.describe('delete repo', () => {
+    let page: Page;
+    let util: utils;
+    let repoPage: repoPage;
+    let mainPage : mainPage;
+
     const guid: string = uuid();
     const repoName = repoPageData.newRepoName + guid;
 
-    test.beforeAll(async ({browser}) =>
-    {
+    test.beforeAll(async ({ browser }) => {
         var context = await utils.getContext(browser, commonData.storageStateFileName);
         page = await context.newPage();
         repoPage = factory.initRepoPage(page);
-        signinPage = factory.initSigninPage(page);
-        await repoPage.gotoCreateRepoPage(signinPage, signinPageData.email, signinPageData.password);
         util = factory.initUtils(page);
-        deletePage = factory.initDeletePage(page);
+        mainPage = factory.initMainPage(page);
+        
+        await mainPage.loadMainPage();
+        await mainPage.gotoCreateRepoPage();
         await repoPage.createRepo(repoName);
     });
 
-    test('deleting repo', async () => 
-    {
-        await deletePage.gotoDeletePage(repoPageSelectors.settingsTab);
-        await deletePage.deleteRepo(commonData.accountName, repoName);
+    test('deleting repo', async () => {
+        await repoPage.gotoDeletePage(repoPageSelectors.settingsTab);
+        await repoPage.deleteRepo(commonData.accountName, repoName);
         await expect(await util.locator(userProfilePageSelectors.userRepositoriesList)).toBeVisible();
     });
 
-    test.afterAll(async () =>
-    {
+    test.afterAll(async () => {
         await page.close();
     })
 })
