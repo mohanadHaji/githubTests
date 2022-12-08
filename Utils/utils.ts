@@ -1,5 +1,4 @@
-import { Browser, BrowserContext, Locator, Page } from "@playwright/test";
-import { commonData } from "../Data/common.data";
+import { Locator, Page } from "@playwright/test";
 import { stateEnum } from "../enums/state.enum";
 
 export class utils {
@@ -9,12 +8,10 @@ export class utils {
         this.page = page;
     }
 
-    async goto(url: string, nextSelector?: string, timeout?: number) {
+    async goto(url: string, nextSelector: string, timeout?: number) {
         try {
             await this.page.goto(url)
-            if (nextSelector) {
-                await this.waitForSelector(nextSelector, { nextState: stateEnum.attached, timeout: timeout })
-            }
+            await this.waitForSelector(nextSelector, { timeout: timeout })
         }
         catch (error) {
             console.log('failed navigiating to the to page\nwith error : ' + error);
@@ -28,6 +25,15 @@ export class utils {
         }
         catch (error) {
             console.log('failed finding the visibilty of the locater: ' + selector + '\nwith error : ' + error);
+            throw error;
+        }
+    }
+
+    async isLocatorChecked(selector: string): Promise<boolean> {
+        try {
+            return await (await this.locator(selector)).isChecked();
+        } catch (error) {
+            console.log('could not check if locator: ' + selector + 'is checked with error:' + error);
             throw error;
         }
     }
@@ -53,13 +59,11 @@ export class utils {
         }
     }
 
-    async click(selector: string | Locator, nextSelector?: string, nextState?: stateEnum.attached | stateEnum.visible, timeout?: number): Promise<void> {
+    async click(selector: string | Locator, nextSelector: string, timeout?: number): Promise<void> {
         try {
             let locator = typeof selector === 'string' ? await this.locator(selector) : selector;
             await locator.click();
-            if (nextSelector != null) {
-                await this.waitForSelector(nextSelector, { nextState: nextState, timeout: timeout })
-            }
+            await this.waitForSelector(nextSelector, { timeout: timeout })
         } catch (error) {
             console.log('failed to click the selector ' + selector + '\nwith error : ' + error);
             throw error;
@@ -85,8 +89,8 @@ export class utils {
         }
     }
 
-    async waitForSelector(selector: string, option?: { nextState?: stateEnum.attached | stateEnum.visible, timeout?: number }) {
-        await this.page.waitForSelector(selector, { state: option?.nextState === null ? stateEnum.visible : option?.nextState, timeout: option?.timeout })
+    async waitForSelector(selector: string, option?: { timeout?: number }) {
+        await this.page.waitForSelector(selector, { state: stateEnum.visible, timeout: option?.timeout })
     }
 
     format(input: string, inputArray: string[]) : string {
@@ -101,11 +105,6 @@ export class utils {
             throw error;
         }
     };
-
-
-    static async getContext(browser: Browser, storageName: string = commonData.storageStatePath): Promise<BrowserContext> {
-        return await browser.newContext({ storageState: storageName });
-    }
 
     async sleep(dealyInSeconds: number) {
         await this.page.waitForTimeout(dealyInSeconds * 1000);

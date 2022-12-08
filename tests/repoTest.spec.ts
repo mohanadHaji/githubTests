@@ -8,41 +8,43 @@ import { signinPageData } from '../Data/signinPage.data';
 import { utils } from '../Utils/utils';
 import { commonData } from '../Data/common.data';
 import { profilePage } from '../pages/profile.page';
-import mainPage from '../pages/main.page';
+import { mainPage } from '../pages/main.page';
+import homePage from '../pages/home.page';
 
 test.describe('create repo tests', () => {
     let page: Page;
     let repoPage: repoPage;
     let profilePage: profilePage
     let util: utils;
-    let mainPage: mainPage;
+    let homePage: homePage
 
     let previousNumberOfRepo: number;
     const guid: string = uuid();
 
     test.beforeAll(async ({ browser }) => {
-        var context = await utils.getContext(browser, commonData.storageStateFileName);
+        var context = await browser.newContext({ storageState: commonData.storageStateFileName });
         page = await context.newPage();
+
         repoPage = factory.initRepoPage(page);
         profilePage = factory.initProfilePage(page);
         util = factory.initUtils(page);
-        mainPage = factory.initMainPage(page)
+        homePage = factory.initHomePage(page);
     });
 
     test.beforeEach(async ()=>{
-        await mainPage.loadMainPage();
+        await homePage.loadHomePage();
         await profilePage.gotoProfilePage();
         previousNumberOfRepo = await profilePage.getNumberOfRepos();
-        await mainPage.gotoMainPage();
+        await homePage.clickHomePage();
     });
     
     test('create new repo', async () => {
         var repoName = repoPageData.newRepoName + guid;
-        await mainPage.gotoCreateRepoPage();
+        await homePage.clickCreateRepoPage();
         await repoPage.createRepo(repoName, repoPageData.descrption);
         await expect(page).toHaveURL(new RegExp(repoName));
 
-        await util.sleep(3);
+        await util.sleep(5);
         await profilePage.gotoProfilePage();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
         expect(currentNumberOfRepo).toBe(previousNumberOfRepo + 1);

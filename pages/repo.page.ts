@@ -5,6 +5,7 @@ import { repoPageSelectors } from "../selectors/repoPage.selectors";
 import { commonData } from "../Data/common.data";
 import { repoPageData } from "../Data/repoPage.data";
 import { stateEnum } from "../enums/state.enum";
+import { profilePageSelectors } from "../selectors/profilePage.selectors";
 
 export class repoPage {
     private readonly utils: utils
@@ -15,13 +16,21 @@ export class repoPage {
 
     async createRepo(repoName: string, desciption?: string, isPublic: boolean = true): Promise<void> {
         await this.utils.fill(repoPageSelectors.newRepoNameSelector, repoName, repoPageSelectors.newRepoNameSelector);
+
         if (desciption != null) {
             await this.utils.fill(repoPageSelectors.repository_description, desciption);
         }
 
-        isPublic ? await this.utils.click(repoPageSelectors.repository_visibility_public) :
-            await this.utils.click(repoPageSelectors.repository_visibility_private);
-        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab, stateEnum.visible, 8000);
+        let repoVisibilitySelector = isPublic ? repoPageSelectors.repository_visibility_public : repoPageSelectors.repository_visibility_private
+        await this.utils.click(repoVisibilitySelector, repoPageSelectors.repository_visibility_public)
+
+        if (!await this.utils.isLocatorChecked(repoVisibilitySelector)) {
+            let errorMessage : string = 'repo visibilty (' + repoVisibilitySelector + ') is not checked correctly'
+            console.log(errorMessage)
+            throw new Error(errorMessage);
+        }
+
+        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab);
     }
 
     async gotoDeletePage(pageSelector: string): Promise<void> {
@@ -34,6 +43,6 @@ export class repoPage {
         await this.utils.fill(repoPageSelectors.deleteConfirmationLabel, accountName + '/' + repoName)
         let deleteLabel = await this.utils.getByText(repoPageData.deleteLabelTest);
 
-        await this.utils.click(deleteLabel);
+        await this.utils.click(deleteLabel, profilePageSelectors.repoButton);
     }
 }

@@ -3,7 +3,7 @@ import { commonData } from "../Data/common.data";
 import { signinPageData } from "../Data/signinPage.data";
 import { stateEnum } from "../enums/state.enum";
 import { factory } from "../factory";
-import { mainPageSelectors } from "../selectors/mainPage.selectors";
+import { homePageSelectors } from "../selectors/homePage.selectors";
 import { signinPageSelectors } from "../selectors/signinPage.selectors";
 import { utils } from "../Utils/utils";
 
@@ -19,15 +19,15 @@ export default class signinPage {
     async signin(email: string, password: string, saveContext: boolean = true, storageStateFileName: string = commonData.storageStatePath): Promise<void> {
         await this.utils.fill(signinPageSelectors.emailSelector, email);
         await this.utils.fill(signinPageSelectors.passwordSelector, password);
-        await this.utils.click(signinPageSelectors.signinButtonSelector, mainPageSelectors.feedbackButton, stateEnum.attached);
+        await this.utils.click(signinPageSelectors.signinButtonSelector, homePageSelectors.userAvatar);
         if (saveContext) {
             await this.saveContext(storageStateFileName);
         }
     }
 
     async signout(): Promise<void> {
-        await this.utils.click(mainPageSelectors.userAvatar, mainPageSelectors.signoutButton);
-        await this.utils.click(mainPageSelectors.signoutButton, signinPageSelectors.userEmail);
+        await this.utils.click(homePageSelectors.userAvatar, homePageSelectors.signoutButton);
+        await this.utils.click(homePageSelectors.signoutButton, signinPageSelectors.userEmail);
     }
 
     private async saveContext(storageName: string) {

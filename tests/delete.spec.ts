@@ -4,36 +4,47 @@ import { v4 as uuid } from 'uuid';
 import { factory } from "../factory";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";
 import { commonData } from "../Data/common.data";
-import { userProfilePageSelectors } from "../selectors/userProfile.selectors";
 import { repoPage } from "../pages/repo.page";
 import { repoPageData } from "../Data/repoPage.data";
-import mainPage from "../pages/main.page";
+import homePage from "../pages/home.page";
+import { profilePage } from "../pages/profile.page";
 
 test.describe('delete repo', () => {
     let page: Page;
     let util: utils;
     let repoPage: repoPage;
-    let mainPage : mainPage;
+    let homePage : homePage;
+    let profilePage: profilePage
 
+    let previousNumberOfRepo : number;
     const guid: string = uuid();
     const repoName = repoPageData.newRepoName + guid;
 
     test.beforeAll(async ({ browser }) => {
-        var context = await utils.getContext(browser, commonData.storageStateFileName);
+        var context = await browser.newContext();
         page = await context.newPage();
         repoPage = factory.initRepoPage(page);
         util = factory.initUtils(page);
-        mainPage = factory.initMainPage(page);
-        
-        await mainPage.loadMainPage();
-        await mainPage.gotoCreateRepoPage();
+        homePage = factory.initHomePage(page);
+        profilePage = factory.initProfilePage(page);
+
+        await homePage.loadHomePage();
+        await profilePage.gotoProfilePage();
+        previousNumberOfRepo = await profilePage.getNumberOfRepos();
+        await homePage.clickHomePage();
+
+        await homePage.clickCreateRepoPage();
         await repoPage.createRepo(repoName);
     });
 
     test('deleting repo', async () => {
         await repoPage.gotoDeletePage(repoPageSelectors.settingsTab);
         await repoPage.deleteRepo(commonData.accountName, repoName);
-        await expect(await util.locator(userProfilePageSelectors.userRepositoriesList)).toBeVisible();
+        
+        await util.sleep(5);
+        await profilePage.gotoProfilePage();
+        let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
+        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 2);
     });
 
     test.afterAll(async () => {
