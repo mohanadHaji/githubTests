@@ -30,7 +30,7 @@ test.describe('projects tests', () => {
     });
 
     test.beforeEach(async () => {
-        await profilePage.gotoProfilePage();
+        await profilePage.clickProfilePage();
         await profilePage.clickProjectsSectionLink();
         previousNumberOfProject = await profilePage.getNumberOfProjects();
         await profilePage.clickCreateProject();
@@ -43,7 +43,7 @@ test.describe('projects tests', () => {
 
     test.afterEach(async () => {
         await util.sleep(5);
-        await profilePage.gotoProfilePage()
+        await profilePage.clickProfilePage()
         await profilePage.clickProjectsSectionLink();
         await expect(await profilePage.getNumberOfProjects()).toBe(previousNumberOfProject+1); 
     })

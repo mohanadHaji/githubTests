@@ -3,6 +3,7 @@ import { repoPageData } from "../Data/repoPage.data";
 import { factory } from "../factory";
 import { homePageSelectors } from "../selectors/homePage.selectors";
 import { profilePageSelectors } from "../selectors/profilePage.selectors";
+import { projectPageSelectors } from "../selectors/projectPage.selectors";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";
 import { utils } from "../Utils/utils";
 
