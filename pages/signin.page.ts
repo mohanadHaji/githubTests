@@ -1,7 +1,5 @@
 import { Page } from "@playwright/test";
 import { commonData } from "../Data/common.data";
-import { signinPageData } from "../Data/signinPage.data";
-import { stateEnum } from "../enums/state.enum";
 import { factory } from "../factory";
 import { homePageSelectors } from "../selectors/homePage.selectors";
 import { signinPageSelectors } from "../selectors/signinPage.selectors";
@@ -17,8 +15,8 @@ export default class signinPage {
     }
     
     async signin(email: string, password: string, saveContext: boolean = true, storageStateFileName: string = commonData.storageStatePath): Promise<void> {
-        await this.utils.fill(signinPageSelectors.emailSelector, email);
-        await this.utils.fill(signinPageSelectors.passwordSelector, password);
+        await this.utils.fill(signinPageSelectors.emailSelector, email, signinPageSelectors.emailSelector);
+        await this.utils.fill(signinPageSelectors.passwordSelector, password, signinPageSelectors.passwordSelector);
         await this.utils.click(signinPageSelectors.signinButtonSelector, homePageSelectors.userAvatar);
         if (saveContext) {
             await this.saveContext(storageStateFileName);

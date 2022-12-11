@@ -13,17 +13,17 @@ export class profilePage {
         this.utils = factory.initUtils(page);
     }
 
-    async gotoProfilePage(): Promise<void> {
+    async clickProfilePage(): Promise<void> {
         await this.utils.click(homePageSelectors.userAvatar, homePageSelectors.signoutButton);
         await this.utils.click(repoPageData.yourProfileText, profilePageSelectors.repoButton);
     }
 
-    async gotoReposTab(): Promise<void>
+    async clickReposTab(): Promise<void>
     {
         await this.utils.click(profilePageSelectors.repoButton, profilePageSelectors.repoSearchButton);
     }
     
-    async gotoRepo(accountName : string, repoName: string)
+    async clickRepo(accountName : string, repoName: string)
     {
         await this.utils.click(this.utils.format(profilePageSelectors.repoPageLink, [accountName, repoName]), repoPageSelectors.codeTab)
     }

@@ -3,12 +3,9 @@ import { factory } from '../factory';
 import { v4 as uuid } from 'uuid';
 import { repoPage } from '../pages/repo.page';
 import { repoPageData } from '../Data/repoPage.data';
-import signinPage from '../pages/signin.page';
-import { signinPageData } from '../Data/signinPage.data';
 import { utils } from '../Utils/utils';
 import { commonData } from '../Data/common.data';
 import { profilePage } from '../pages/profile.page';
-import { mainPage } from '../pages/main.page';
 import homePage from '../pages/home.page';
 
 test.describe('create repo tests', () => {
@@ -33,7 +30,7 @@ test.describe('create repo tests', () => {
 
     test.beforeEach(async ()=>{
         await homePage.loadHomePage();
-        await profilePage.gotoProfilePage();
+        await profilePage.clickProfilePage();
         previousNumberOfRepo = await profilePage.getNumberOfRepos();
         await homePage.clickHomePage();
     });
@@ -45,7 +42,7 @@ test.describe('create repo tests', () => {
         await expect(page).toHaveURL(new RegExp(repoName));
 
         await util.sleep(5);
-        await profilePage.gotoProfilePage();
+        await profilePage.clickProfilePage();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
         expect(currentNumberOfRepo).toBe(previousNumberOfRepo + 1);
     });

@@ -8,6 +8,7 @@ import { repoPage } from "../pages/repo.page";
 import { repoPageData } from "../Data/repoPage.data";
 import homePage from "../pages/home.page";
 import { profilePage } from "../pages/profile.page";
+import { profilePageSelectors } from "../selectors/profilePage.selectors";
 
 test.describe('delete repo', () => {
     let page: Page;
@@ -29,7 +30,7 @@ test.describe('delete repo', () => {
         profilePage = factory.initProfilePage(page);
 
         await homePage.loadHomePage();
-        await profilePage.gotoProfilePage();
+        await profilePage.clickProfilePage();
         previousNumberOfRepo = await profilePage.getNumberOfRepos();
         await homePage.clickHomePage();
 
@@ -38,11 +39,11 @@ test.describe('delete repo', () => {
     });
 
     test('deleting repo', async () => {
-        await repoPage.gotoDeletePage(repoPageSelectors.settingsTab);
+        await repoPage.clickDeletePage(repoPageSelectors.settingsTab);
         await repoPage.deleteRepo(commonData.accountName, repoName);
         
         await util.sleep(5);
-        await profilePage.gotoProfilePage();
+        await util.reloadPage(profilePageSelectors.repoButton)
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
         expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 2);
     });

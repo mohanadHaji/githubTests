@@ -2,9 +2,7 @@ import { Page } from "@playwright/test";
 import { utils } from "../Utils/utils";
 import { factory } from "../factory";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";
-import { commonData } from "../Data/common.data";
 import { repoPageData } from "../Data/repoPage.data";
-import { stateEnum } from "../enums/state.enum";
 import { profilePageSelectors } from "../selectors/profilePage.selectors";
 
 export class repoPage {
@@ -18,7 +16,7 @@ export class repoPage {
         await this.utils.fill(repoPageSelectors.newRepoNameSelector, repoName, repoPageSelectors.newRepoNameSelector);
 
         if (desciption != null) {
-            await this.utils.fill(repoPageSelectors.repository_description, desciption);
+            await this.utils.fill(repoPageSelectors.repository_description, desciption, repoPageSelectors.repository_description);
         }
 
         let repoVisibilitySelector = isPublic ? repoPageSelectors.repository_visibility_public : repoPageSelectors.repository_visibility_private
@@ -33,14 +31,14 @@ export class repoPage {
         await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab);
     }
 
-    async gotoDeletePage(pageSelector: string): Promise<void> {
+    async clickDeletePage(pageSelector: string): Promise<void> {
         await this.utils.click(pageSelector, repoPageSelectors.renameField)
     }
 
     async deleteRepo(accountName: string, repoName: string): Promise<void> {
         let deleteButton = await this.utils.getByRole('button', repoPageData.deleteButtonText);
         await this.utils.click(deleteButton, repoPageSelectors.deleteConfirmationLabel);
-        await this.utils.fill(repoPageSelectors.deleteConfirmationLabel, accountName + '/' + repoName)
+        await this.utils.fill(repoPageSelectors.deleteConfirmationLabel, accountName + '/' + repoName, repoPageSelectors.deleteConfirmationLabel)
         let deleteLabel = await this.utils.getByText(repoPageData.deleteLabelTest);
 
         await this.utils.click(deleteLabel, profilePageSelectors.repoButton);

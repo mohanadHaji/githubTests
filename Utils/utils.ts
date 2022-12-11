@@ -47,11 +47,9 @@ export class utils {
         }
     }
 
-    async fill(selector: string, data: string, waitForSelector?: string): Promise<void> {
+    async fill(selector: string, data: string, waitForSelector: string): Promise<void> {
         try {
-            if (waitForSelector) {
-                await this.waitForSelector(waitForSelector)
-            }
+            await this.waitForSelector(waitForSelector)
             await (await this.locator(selector)).fill(data);
         } catch (error) {
             console.log('failed to fill the selector ' + selector + '\nwith error : ' + error);
@@ -91,6 +89,11 @@ export class utils {
 
     async waitForSelector(selector: string, option?: { timeout?: number }) {
         await this.page.waitForSelector(selector, { state: stateEnum.visible, timeout: option?.timeout })
+    }
+
+    async reloadPage(nextSelector: string) {
+        await this.page.reload();
+        await this.waitForSelector(nextSelector);
     }
 
     format(input: string, inputArray: string[]) : string {
