@@ -14,13 +14,11 @@ export default class signinPage {
         this.page = page;
     }
     
-    async signin(email: string, password: string, saveContext: boolean = true, storageStateFileName: string = commonData.storageStatePath): Promise<void> {
+    async signin(email: string, password: string, storageStateFileName: string = commonData.storageStatePath): Promise<void> {
         await this.utils.fill(signinPageSelectors.emailSelector, email, signinPageSelectors.emailSelector);
         await this.utils.fill(signinPageSelectors.passwordSelector, password, signinPageSelectors.passwordSelector);
         await this.utils.click(signinPageSelectors.signinButtonSelector, homePageSelectors.userAvatar);
-        if (saveContext) {
-            await this.saveContext(storageStateFileName);
-        }
+        await this.saveContext(storageStateFileName);
     }
 
     async signout(): Promise<void> {

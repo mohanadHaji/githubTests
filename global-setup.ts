@@ -14,7 +14,7 @@ async function globalSetup(config: FullConfig) {
     let signinPage: signinPage = factory.initSigninPage(page);
 
     await utils.goto(baseURL as string, signinPageSelectors.emailSelector)
-    await signinPage.signin(signinPageData.email, signinPageData.password, true, storageState as string)
+    await signinPage.signin(signinPageData.email, signinPageData.password, storageState as string)
     await browser.close();
 }
 
