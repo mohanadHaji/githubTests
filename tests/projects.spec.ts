@@ -18,7 +18,6 @@ test.describe('projects tests', () => {
 
     test.beforeAll(async ({ browser }) => {
         var context = await browser.newContext();
-        await context.clearCookies();
         page = await context.newPage();
 
         util = factory.initUtils(page);
@@ -34,6 +33,7 @@ test.describe('projects tests', () => {
         await profilePage.clickProjectsSectionLink();
         previousNumberOfProject = await profilePage.getNumberOfProjects();
         await profilePage.clickCreateProject();
+        await projectPage.closePopWindow();
     })
 
     test('create a porject test', async () => {

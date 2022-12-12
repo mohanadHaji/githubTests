@@ -31,6 +31,7 @@ test.describe('create repo tests', () => {
     test.beforeEach(async ()=>{
         await homePage.loadHomePage();
         await profilePage.clickProfilePage();
+        await profilePage.clickReposTab();
         previousNumberOfRepo = await profilePage.getNumberOfRepos();
         await homePage.clickHomePage();
     });
@@ -43,6 +44,7 @@ test.describe('create repo tests', () => {
 
         await util.sleep(5);
         await profilePage.clickProfilePage();
+        await profilePage.clickReposTab();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
         expect(currentNumberOfRepo).toBe(previousNumberOfRepo + 1);
     });

@@ -38,7 +38,7 @@ export class profilePage {
     }
 
     async clickCreateProject(): Promise<void> {
-        await this.utils.click(await this.utils.getByText(profilePageSelectors.newProjectText), projectPageSelectors.popoutWindoCreateButton);
+        await this.utils.click(await this.utils.getByRole('button', profilePageSelectors.newProjectText), projectPageSelectors.popoutWindoCreateButton);
     }
 
     async getNumberOfProjects(): Promise<number> {

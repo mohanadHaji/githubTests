@@ -6,7 +6,6 @@ export const profilePageSelectors =
     repoPageLink: 'a[href="/{0}/{1}"]',
     projectsPageButton: 'div.width-full [data-tab-item="projects"]',
     projectsInfoSection: '#memexes-results',
-    newProjectText: 'New project',
-    numberOfProjectsRegx: /\s+[0-9]+ Open/i,
-
+    newProjectText: 'Create a new project',
+    numberOfProjectsRegx: /[0-9]+ Open/i,
 }
