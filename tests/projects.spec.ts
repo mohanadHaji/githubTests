@@ -41,10 +41,17 @@ test.describe('projects tests', () => {
         await projectPage.renameProject(projectName);
     })
 
+    test('delete a project test', async () => {
+        let projectName = projectPageData.projectName + uuid();
+        await projectPage.renameProject(projectName);
+        await projectPage.clickProjectSettings();
+        await projectPage.deleteProject(projectName);
+    });
+
     test.afterEach(async () => {
         await util.sleep(5);
         await profilePage.clickProfilePage()
         await profilePage.clickProjectsSectionLink();
-        await expect(await profilePage.getNumberOfProjects()).toBe(previousNumberOfProject+1); 
+        await expect(await profilePage.getNumberOfProjects()).toBeLessThan(previousNumberOfProject+2); 
     })
 });
