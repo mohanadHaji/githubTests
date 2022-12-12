@@ -1,12 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
-import { factory } from '../factory';
+import { factory } from '../../factory';
 import { v4 as uuid } from 'uuid';
-import { repoPage } from '../pages/repo.page';
-import { repoPageData } from '../Data/repoPage.data';
-import { utils } from '../Utils/utils';
-import { commonData } from '../Data/common.data';
-import { profilePage } from '../pages/profile.page';
-import homePage from '../pages/home.page';
+import { repoPage } from '../../pages/repo.page';
+import { repoPageData } from '../../Data/repoPage.data';
+import { utils } from '../../Utils/utils';
+import { commonData } from '../../Data/common.data';
+import { profilePage } from '../../pages/profile.page';
+import homePage from '../../pages/home.page';
 
 test.describe('create repo tests', () => {
     let page: Page;

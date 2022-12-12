@@ -1,11 +1,11 @@
 import test, { expect, Page } from "@playwright/test";
-import { projectPageData } from "../Data/projectsPage.data";
-import { factory } from "../factory";
+import { projectPageData } from "../../Data/projectsPage.data";
+import { factory } from "../../factory";
 import { v4 as uuid } from 'uuid';
-import homePage from "../pages/home.page";
-import { profilePage } from "../pages/profile.page";
-import { projectPage } from "../pages/project.page";
-import { utils } from "../Utils/utils";
+import homePage from "../../pages/home.page";
+import { profilePage } from "../../pages/profile.page";
+import { projectPage } from "../../pages/project.page";
+import { utils } from "../../Utils/Utils";
 
 test.describe('projects tests', () => {
     let page: Page;
@@ -53,5 +53,9 @@ test.describe('projects tests', () => {
         await profilePage.clickProfilePage()
         await profilePage.clickProjectsSectionLink();
         await expect(await profilePage.getNumberOfProjects()).toBeLessThan(previousNumberOfProject+2); 
+    })
+
+    test.afterAll(async () => {
+        await page.close()
     })
 });
