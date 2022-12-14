@@ -43,4 +43,15 @@ export class repoPage {
 
         await this.utils.click(deleteLabel, profilePageSelectors.repoButton);
     }
+
+    async clickProjectTab() {
+        await this.utils.click(repoPageSelectors.projectTab, repoPageSelectors.linkOrAddProjectButton);
+    }
+
+    async linkProject(projectName: string) {
+        await this.utils.click(repoPageSelectors.linkOrAddProjectButton, repoPageSelectors.searhForProjectButton);
+        await this.utils.fill(repoPageSelectors.searhForProjectButton, projectName, repoPageSelectors.searhForProjectButton);
+        await this.utils.click(await this.utils.getByText(projectName), repoPageSelectors.linkOrAddProjectButton);
+        await this.utils.click(repoPageSelectors.linkOrAddProjectButton, repoPageSelectors.linkOrAddProjectButton);
+    }
 }

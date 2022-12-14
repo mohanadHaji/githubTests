@@ -48,11 +48,12 @@ test.describe('projects tests', () => {
         await projectPage.deleteProject(projectName);
     });
 
+
     test.afterEach(async () => {
         await util.sleep(5);
         await profilePage.clickProfilePage()
         await profilePage.clickProjectsSectionLink();
-        await expect(await profilePage.getNumberOfProjects()).toBeLessThan(previousNumberOfProject+2); 
+        await expect(await profilePage.getNumberOfProjects()).toBeLessThan(previousNumberOfProject + 3); 
     })
 
     test.afterAll(async () => {
