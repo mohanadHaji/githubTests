@@ -7,8 +7,6 @@ import { utils } from '../../Utils/utils';
 import { commonData } from '../../Data/common.data';
 import { profilePage } from '../../pages/profile.page';
 import homePage from '../../pages/home.page';
-import { repoPageSelectors } from '../../selectors/repoPage.selectors';
-import { profilePageSelectors } from '../../selectors/profilePage.selectors';
 
 test.describe('create repo tests', () => {
     let page: Page;
@@ -18,7 +16,7 @@ test.describe('create repo tests', () => {
     let homePage: homePage
 
     let previousNumberOfRepo: number;
-    
+    const guid: string = uuid();
 
     test.beforeAll(async ({ browser }) => {
         var context = await browser.newContext({ storageState: commonData.storageStateFileName });
@@ -39,31 +37,18 @@ test.describe('create repo tests', () => {
     });
     
     test('create new repo', async () => {
-        const guid: string = uuid();
         var repoName = repoPageData.newRepoName + guid;
         await homePage.clickCreateRepoPage();
         await repoPage.createRepo(repoName, repoPageData.descrption);
         await expect(page).toHaveURL(new RegExp(repoName));
-    });
 
-    test('deleting repo', async () => {
-        const guid: string = uuid();
-        var repoName = repoPageData.newRepoName + guid;
-
-        await homePage.clickCreateRepoPage();
-        await repoPage.createRepo(repoName);
-        
-        await repoPage.clickDeletePage(repoPageSelectors.settingsTab);
-        await repoPage.deleteRepo(commonData.accountName, repoName);
-    });
-
-    test.afterEach(async () => {
-        await util.sleep(7);
+        await util.sleep(5);
         await profilePage.clickProfilePage();
         await profilePage.clickReposTab();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
-        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 2);
-    })
+        expect(currentNumberOfRepo).toBe(previousNumberOfRepo + 1);
+    });
+
     test.afterAll(async () => {
         await page.close();
     })
