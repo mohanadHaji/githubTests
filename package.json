@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx playwright test tests/independentTests",
     "headed": "npx playwright test --headed tests/independentTests & npx playwright test tests/dependentTests",
-    "tests": "npx playwright test tests/independentTests & npx playwright test tests/dependentTests",
-    "report": "npx playwright show-report"
+    "tests": "npm run preinstall & npm run postinstall",
+    "report": "npx playwright show-report",
+    "postinstall": "npx playwright test tests/dependentTests"
   },
   "keywords": [],
   "author": "",
