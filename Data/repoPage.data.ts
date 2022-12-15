@@ -2,6 +2,7 @@ export const repoPageData =
 {
     newRepoUrl: "/new",
     newRepoName: 'testingRepo',
+    renameRepoName: 'renameTestingRepo',
     descrption: 'testingDescrption',
     deletePageUrl: '/settings',
     deleteButtonText: 'Delete this repository',

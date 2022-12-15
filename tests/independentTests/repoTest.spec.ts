@@ -58,7 +58,7 @@ test.describe('create repo tests', () => {
         await homePage.clickCreateRepoPage();
         await repoPage.createRepo(repoName);
         
-        await repoPage.clickDeletePage(repoPageSelectors.settingsTab);
+        await repoPage.clickSettingsTab();
         await repoPage.deleteRepo(commonData.accountName, repoName);
     });
 
@@ -87,6 +87,17 @@ test.describe('create repo tests', () => {
         await repoPage.createRepo(repoName, repoPageData.descrption);
         let cloneUrl  = await repoPage.getRepoCloneLink();
         expect(cloneUrl).toBe(commonData.gitHubUrl + '/' + commonData.accountName + '/' + repoName + '.git')
+    })
+
+    test('rename repo',async () => {
+        var repoName = repoPageData.newRepoName + uuid();
+        var repoRename = repoPageData.renameRepoName + uuid();
+        await homePage.clickCreateRepoPage();
+        await repoPage.createRepo(repoName, repoPageData.descrption);
+        await repoPage.clickSettingsTab();
+        await repoPage.renameRepo(repoRename);
+
+        await expect(page).toHaveURL(new RegExp(repoRename))
     })
     test.afterEach(async () => {
         await util.sleep(7);
