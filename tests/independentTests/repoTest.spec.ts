@@ -11,6 +11,7 @@ import { repoPageSelectors } from '../../selectors/repoPage.selectors';
 import { profilePageSelectors } from '../../selectors/profilePage.selectors';
 import { projectPageData } from '../../Data/projectsPage.data';
 import { projectPage } from '../../pages/project.page';
+import { homePageSelectors } from '../../selectors/homePage.selectors';
 
 test.describe('create repo tests', () => {
     let page: Page;
@@ -68,7 +69,7 @@ test.describe('create repo tests', () => {
         await profilePage.clickCreateProject();
         await projectPage.closePopWindow();
         await projectPage.renameProject(projectName);
-        await homePage.loadHomePage();
+        await homePage.clickHomePage(homePageSelectors.githubSvgInProjectPage);
 
         const guid: string = uuid();
         var repoName = repoPageData.newRepoName + guid;
