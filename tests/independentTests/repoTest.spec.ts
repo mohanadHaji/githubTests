@@ -81,12 +81,19 @@ test.describe('create repo tests', () => {
         expect(await util.getByText(projectName)).toBeVisible()
     });
 
+    test('test clone url', async () => {
+        var repoName = repoPageData.newRepoName + uuid();
+        await homePage.clickCreateRepoPage();
+        await repoPage.createRepo(repoName, repoPageData.descrption);
+        let cloneUrl  = await repoPage.getRepoCloneLink();
+        expect(cloneUrl).toBe(commonData.gitHubUrl + '/' + commonData.accountName + '/' + repoName + '.git')
+    })
     test.afterEach(async () => {
         await util.sleep(7);
         await profilePage.clickProfilePage();
         await profilePage.clickReposTab();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
-        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 3);
+        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 4);
     })
     test.afterAll(async () => {
         await page.close();

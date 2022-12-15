@@ -44,7 +44,7 @@ export class repoPage {
         await this.utils.click(deleteLabel, profilePageSelectors.repoButton);
     }
 
-    async clickProjectTab() {
+    async clickProjectTab(): Promise<void> {
         await this.utils.click(repoPageSelectors.projectTab, repoPageSelectors.linkOrAddProjectButton);
     }
 
@@ -53,5 +53,9 @@ export class repoPage {
         await this.utils.fill(repoPageSelectors.searhForProjectButton, projectName, repoPageSelectors.searhForProjectButton);
         await this.utils.click(await this.utils.getByText(projectName), repoPageSelectors.linkOrAddProjectButton);
         await this.utils.click(repoPageSelectors.linkOrAddProjectButton, repoPageSelectors.linkOrAddProjectButton);
+    }
+
+    async getRepoCloneLink(): Promise<string> {
+        return await (await this.utils.locator(repoPageSelectors.cloneUrlLoctors)).getAttribute('value') ?? '';
     }
 }

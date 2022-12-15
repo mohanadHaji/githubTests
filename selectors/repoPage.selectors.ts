@@ -19,5 +19,6 @@ export const repoPageSelectors =
     // code button area to clone repo
     codeTab: '#code-tab',
     codeButtonForLink: 'summary.btn-primary',
-    localTabButton: '#local-tab'
+    localTabButton: '#local-tab',
+    cloneUrlLoctors: '#empty-setup-clone-url'
 }
