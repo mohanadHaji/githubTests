@@ -13,14 +13,27 @@ export default class homePage {
         this.utils = factory.initUtils(page);
     }
 
+    /**
+     * expect to be signed in.
+     * load home page using url.
+     * redirect to home page.
+     */
     async loadHomePage(): Promise<void> {
         await this.utils.goto(commonData.gitHubUrl, homePageSelectors.feedbackButton);
     }
 
+    /**
+     * redirect you from anywhere in code to home page
+     * @param githubSvhSelector send the svg selector in case it changed on some pages (like in project page a space was added at the end of the selector)
+     */
     async clickHomePage(githubSvhSelector: string = homePageSelectors.githubSvg) {
         await this.utils.click(githubSvhSelector, homePageSelectors.feedbackButton);
     }
 
+    /**
+     * expect to be in home page.
+     * redirect you to create new repo page.
+     */
     async clickCreateRepoPage()
     {
         this.utils.click(await this.utils.getByText(homePageSelectors.createNewRepoText), repoPageSelectors.newRepoNameSelector);

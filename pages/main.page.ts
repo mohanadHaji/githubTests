@@ -12,10 +12,19 @@ export class mainPage
         this.utils = factory.initUtils(page);
     }
 
+    /**
+     * expect to not be signed in.
+     * load main page from url.
+     * redirect to main page.
+     */
     async loadMainPage(): Promise<void> {
         await this.utils.goto(commonData.gitHubUrl, mainPageSelectors.userEmailForSignUp);
     }
 
+    /**
+     * expect to be in main page.
+     * redirect to sign in page.
+     */
     async clickSigninPage(): Promise<void> {
         await this.utils.click(await this.utils.getByText(mainPageSelectors.siginInButtonText), mainPageSelectors.userLoginField);
     }

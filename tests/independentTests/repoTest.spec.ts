@@ -109,7 +109,7 @@ test.describe('create repo tests', () => {
         await repoPage.changeRepoVisibility();
 
         await util.click(await util.getByText(repoPageSelectors.ChangeVisibilityButtonText), await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex));
-        await expect(await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex)).toHaveText('    Change to public')
+        await expect(await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex)).toHaveText(repoPageData.changeToPublicText)
         await util.click(await util.getByText(repoPageSelectors.ChangeVisibilityButtonText), repoPageSelectors.renameField);
     });
 

@@ -14,6 +14,13 @@ export default class signinPage {
         this.page = page;
     }
     
+    /**
+     * expect to be signed out and in signin page
+     * redirect to home page after success
+     * @param email email of test user
+     * @param password password of test user
+     * @param storageStateFileName storage state to save context in
+     */
     async signin(email: string, password: string, storageStateFileName: string = commonData.storageStatePath): Promise<void> {
         await this.utils.fill(signinPageSelectors.emailSelector, email, signinPageSelectors.emailSelector);
         await this.utils.fill(signinPageSelectors.passwordSelector, password, signinPageSelectors.passwordSelector);
@@ -21,11 +28,19 @@ export default class signinPage {
         await this.saveContext(storageStateFileName);
     }
 
+    /**
+     * expect to be sigined in and in home page.
+     * redirect to main page.
+     */
     async signout(): Promise<void> {
         await this.utils.click(homePageSelectors.userAvatar, homePageSelectors.signoutButton);
         await this.utils.click(homePageSelectors.signoutButton, signinPageSelectors.userEmail);
     }
 
+    /**
+     * save context in a file.
+     * @param storageName file name to save context in
+     */
     private async saveContext(storageName: string) {
         await this.page.context().storageState({ path: storageName });;
     }
