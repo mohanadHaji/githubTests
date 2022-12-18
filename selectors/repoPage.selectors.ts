@@ -16,7 +16,10 @@ export const repoPageSelectors =
     projectTab: '#projects-tab',
     linkOrAddProjectButton: '#link-or-add-project-button',
     searhForProjectButton: '#query',
-
+    ChangeVisibilityButtonText: '    Change visibility',
+    ChangeVisibilityToButtonRegex: /\s+Change to [a-zA-Z]+/i,
+    ChangeRepoConfirmButton: '.Button-label',
+    
     // code button area to clone repo
     codeTab: '#code-tab',
     codeButtonForLink: 'summary.btn-primary',

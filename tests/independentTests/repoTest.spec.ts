@@ -22,7 +22,7 @@ test.describe('create repo tests', () => {
     let projectPage: projectPage;
 
     let previousNumberOfRepo: number;
-    
+
 
     test.beforeAll(async ({ browser }) => {
         var context = await browser.newContext({ storageState: commonData.storageStateFileName });
@@ -35,14 +35,14 @@ test.describe('create repo tests', () => {
         projectPage = factory.initProjectsPage(page);
     });
 
-    test.beforeEach(async ()=>{
+    test.beforeEach(async () => {
         await homePage.loadHomePage();
         await profilePage.clickProfilePage();
         await profilePage.clickReposTab();
         previousNumberOfRepo = await profilePage.getNumberOfRepos();
         await homePage.clickHomePage();
     });
-    
+
     test('create new repo', async () => {
         const guid: string = uuid();
         var repoName = repoPageData.newRepoName + guid;
@@ -57,12 +57,12 @@ test.describe('create repo tests', () => {
 
         await homePage.clickCreateRepoPage();
         await repoPage.createRepo(repoName);
-        
+
         await repoPage.clickSettingsTab();
         await repoPage.deleteRepo(commonData.accountName, repoName);
     });
 
-    test('link project to repo',async () => {
+    test('link project to repo', async () => {
         let projectName = projectPageData.projectName + uuid();
         await profilePage.clickProfilePage();
         await profilePage.clickProjectsSectionLink();
@@ -85,11 +85,11 @@ test.describe('create repo tests', () => {
         var repoName = repoPageData.newRepoName + uuid();
         await homePage.clickCreateRepoPage();
         await repoPage.createRepo(repoName, repoPageData.descrption);
-        let cloneUrl  = await repoPage.getRepoCloneLink();
+        let cloneUrl = await repoPage.getRepoCloneLink();
         expect(cloneUrl).toBe(commonData.gitHubUrl + '/' + commonData.accountName + '/' + repoName + '.git')
-    })
+    });
 
-    test('rename repo',async () => {
+    test('rename repo', async () => {
         var repoName = repoPageData.newRepoName + uuid();
         var repoRename = repoPageData.renameRepoName + uuid();
         await homePage.clickCreateRepoPage();
@@ -98,14 +98,29 @@ test.describe('create repo tests', () => {
         await repoPage.renameRepo(repoRename);
 
         await expect(page).toHaveURL(new RegExp(repoRename))
-    })
+    });
+
+    test('change privacy to private', async () => {
+        var repoName = repoPageData.newRepoName + uuid();
+        await homePage.clickCreateRepoPage();
+        await repoPage.createRepo(repoName, repoPageData.descrption);
+
+        await repoPage.clickSettingsTab();
+        await repoPage.changeRepoVisibility();
+
+        await util.click(await util.getByText(repoPageSelectors.ChangeVisibilityButtonText), await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex));
+        await expect(await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex)).toHaveText('    Change to public')
+        await util.click(await util.getByText(repoPageSelectors.ChangeVisibilityButtonText), repoPageSelectors.renameField);
+    });
+
     test.afterEach(async () => {
         await util.sleep(7);
         await profilePage.clickProfilePage();
         await profilePage.clickReposTab();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
-        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 4);
-    })
+        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 5);
+    });
+
     test.afterAll(async () => {
         await page.close();
     })

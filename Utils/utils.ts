@@ -57,11 +57,19 @@ export class utils {
         }
     }
 
-    async click(selector: string | Locator, nextSelector: string, timeout?: number): Promise<void> {
+    async click(selector: string | Locator, nextSelector: string | Locator, timeout?: number): Promise<void> {
         try {
             let locator = typeof selector === 'string' ? await this.locator(selector) : selector;
             await locator.click();
-            await this.waitForSelector(nextSelector, { timeout: timeout })
+            
+            if (typeof nextSelector === 'string')
+            {
+                await this.waitForSelector(nextSelector, { timeout: timeout })
+            }
+            else if(!await nextSelector.isVisible())
+            {
+                throw Error('next locator is not visible after clicking the selector')
+            }
         } catch (error) {
             console.log('failed to click the selector ' + selector + '\nwith error : ' + error);
             throw error;
@@ -82,7 +90,7 @@ export class utils {
         }
     }
 
-    async getByText(selector: string): Promise<Locator> {
+    async getByText(selector: string | RegExp): Promise<Locator> {
         try {
             return this.page.getByText(selector);
         } catch (error) {

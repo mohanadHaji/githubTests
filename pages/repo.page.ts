@@ -90,4 +90,17 @@ export class repoPage {
         await this.utils.fill(repoPageSelectors.renameField, newName, repoPageSelectors.renameField)
         await this.utils.click(await this.utils.getByText(repoPageSelectors.renameButtonText), repoPageSelectors.cloneUrlLoctors);
     }
+
+    /**
+     * expect to be in settinfs tab
+     * satys in settings tab after changing
+     */
+    async changeRepoVisibility() {
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.ChangeVisibilityButtonText), await this.utils.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex))
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex), repoPageSelectors.ChangeRepoConfirmButton);
+
+        await this.utils.click(repoPageSelectors.ChangeRepoConfirmButton, repoPageSelectors.ChangeRepoConfirmButton);        
+        await this.utils.click(repoPageSelectors.ChangeRepoConfirmButton, repoPageSelectors.ChangeRepoConfirmButton);
+        await this.utils.click(repoPageSelectors.ChangeRepoConfirmButton, repoPageSelectors.renameField);
+    }
 }
