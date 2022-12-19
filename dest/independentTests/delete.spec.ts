@@ -1,14 +1,14 @@
 import { test, Page, expect } from "@playwright/test";
-import { utils } from "../Utils/utils";
+import { utils } from "../../Utils/utils";
 import { v4 as uuid } from 'uuid';
-import { factory } from "../factory";
-import { repoPageSelectors } from "../selectors/repoPage.selectors";
-import { commonData } from "../Data/common.data";
-import { repoPage } from "../pages/repo.page";
-import { repoPageData } from "../Data/repoPage.data";
-import homePage from "../pages/home.page";
-import { profilePage } from "../pages/profile.page";
-import { profilePageSelectors } from "../selectors/profilePage.selectors";
+import { factory } from "../../factory";
+import { repoPageSelectors } from "../../selectors/repoPage.selectors";
+import { commonData } from "../../Data/common.data";
+import { repoPage } from "../../pages/repo.page";
+import { repoPageData } from "../../Data/repoPage.data";
+import homePage from "../../pages/home.page";
+import { profilePage } from "../../pages/profile.page";
+import { profilePageSelectors } from "../../selectors/profilePage.selectors";
 
 test.describe('delete repo', () => {
     let page: Page;

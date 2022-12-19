@@ -1,8 +1,9 @@
-import { Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { repoPageData } from "../Data/repoPage.data";
 import { factory } from "../factory";
 import { homePageSelectors } from "../selectors/homePage.selectors";
 import { profilePageSelectors } from "../selectors/profilePage.selectors";
+import { projectPageSelectors } from "../selectors/projectPage.selectors";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";
 import { utils } from "../Utils/utils";
 
@@ -30,5 +31,18 @@ export class profilePage {
     async getNumberOfRepos(): Promise<number> {
         let reposCount = await (await this.utils.locator(profilePageSelectors.reposCount)).innerText();
         return +reposCount;
+    }
+
+    async clickProjectsSectionLink(): Promise<void> {
+        await this.utils.click(profilePageSelectors.projectsPageButton, profilePageSelectors.projectsInfoSection);
+    }
+
+    async clickCreateProject(): Promise<void> {
+        await this.utils.click(await this.utils.getByRole('button', profilePageSelectors.newProjectText), projectPageSelectors.popoutWindoCreateButton);
+    }
+
+    async getNumberOfProjects(): Promise<number> {
+        let numberLocator: Locator = await this.utils.getByRole('link', profilePageSelectors.numberOfProjectsRegx);
+        return +(await numberLocator.innerText()).replace(/[^0-9]/g,'');
     }
 }

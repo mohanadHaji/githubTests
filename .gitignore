@@ -3,3 +3,4 @@ node_modules/
 /playwright-report/
 /playwright/.cache/
 /state.json
+tests/test-1.spec.ts

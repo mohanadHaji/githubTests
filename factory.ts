@@ -2,6 +2,7 @@ import { Page } from "@playwright/test";
 import homePage from "./pages/home.page";
 import { mainPage } from "./pages/main.page";
 import { profilePage } from "./pages/profile.page";
+import { projectPage } from "./pages/project.page";
 import { repoPage } from "./pages/repo.page";
 import signinPage from "./pages/signin.page";
 import { utils } from "./Utils/utils";
@@ -29,6 +30,10 @@ class Factory {
 
     initRepoPage(page: Page): repoPage {
         return new repoPage(page);
+    }
+
+    initProjectsPage(page: Page): projectPage {
+        return new projectPage(page);
     }
 }
 

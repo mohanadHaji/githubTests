@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {"headed": "npx playwright test --headed", "tests" : "npx playwright test"},
+  "scripts": {
+    "preinstall": "npx playwright test tests/independentTests",
+    "headed": "npx playwright test --headed tests/independentTests & npx playwright test tests/dependentTests",
+    "tests": "npm run preinstall & npm run postinstall",
+    "report": "npx playwright show-report",
+    "postinstall": "npx playwright test tests/dependentTests"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.28.1",
-    "@types/uuid": "^9.0.0"
+    "@types/uuid": "^9.0.0",
+    "gulp": "^4.0.2"
   },
   "dependencies": {
     "uuid": "^9.0.0"
