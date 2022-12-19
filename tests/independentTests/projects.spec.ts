@@ -28,44 +28,34 @@ test.describe('projects tests', () => {
         await homePage.loadHomePage();
     });
 
-    test('create a porject test', async () => {
-        previousNumberOfProject = await getNumberOfProjects(profilePage);
-
+    test.beforeEach(async () => {
+        await profilePage.clickProfilePage();
+        await profilePage.clickProjectsSectionLink();
+        previousNumberOfProject = await profilePage.getNumberOfProjects();
         await profilePage.clickCreateProject();
         await projectPage.closePopWindow();
+    })
 
+    test('create a porject test', async () => {
         let projectName = projectPageData.projectName + uuid();
         await projectPage.renameProject(projectName);
-
-        await util.sleep(5);
-        await profilePage.clickProfilePage()
-        await profilePage.clickProjectsSectionLink();
-        expect(await getNumberOfProjects(profilePage)).toBeLessThan(previousNumberOfProject + 3);
     })
 
     test('delete a project test', async () => {
-        
-        previousNumberOfProject = await getNumberOfProjects(profilePage)
-        await profilePage.clickCreateProject();
-        await projectPage.closePopWindow();
-
         let projectName = projectPageData.projectName + uuid();
         await projectPage.renameProject(projectName);
         await projectPage.clickProjectSettings();
         await projectPage.deleteProject(projectName);
-
-        await util.sleep(5);
-        
-        expect(await getNumberOfProjects(profilePage)).toBeLessThan(previousNumberOfProject + 3); 
     });
+
+    test.afterEach(async () => {
+        await util.sleep(5);
+        await profilePage.clickProfilePage()
+        await profilePage.clickProjectsSectionLink();
+        expect(await profilePage.getNumberOfProjects()).toBeLessThan(previousNumberOfProject+4); 
+    })
 
     test.afterAll(async () => {
         await page.close()
     })
 });
-
-async function getNumberOfProjects(profilePage: profilePage) : Promise<number> {
-    await profilePage.clickProfilePage();
-    await profilePage.clickProjectsSectionLink();
-    return await profilePage.getNumberOfProjects();
-}

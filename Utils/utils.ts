@@ -17,15 +17,6 @@ export class utils {
         }
     }
 
-    async isLocatorVisible(selector: string): Promise<boolean> {
-        try {
-            return await (await this.locator(selector)).isVisible();
-        }
-        catch (error) {
-            throw new Error('failed finding the visibilty of the locater: ' + selector + '\nwith error : ' + error);
-        }
-    }
-
     async isLocatorChecked(selector: string): Promise<boolean> {
         try {
             return await (await this.locator(selector)).isChecked();
@@ -59,7 +50,7 @@ export class utils {
             if (typeof nextSelector === 'string') {
                 await this.waitForSelector(nextSelector, { timeout: timeout })
             }
-            else if (!await nextSelector.isVisible()) {
+            else if (!await this.isLocatorVisible(selector)) {
                 throw Error('next locator is not visible after clicking the selector')
             }
         } catch (error) {
@@ -97,6 +88,15 @@ export class utils {
         await this.page.waitForSelector(selector, { timeout: option?.timeout })
     }
 
+    async isLocatorVisible(selector: string | Locator, timeout: number = 5): Promise<boolean> {
+        let locator: Locator = typeof selector === 'string' ? await this.locator(selector) : selector;
+        try {
+            return await this.setTimeout(timeout, async () => await locator.isVisible());
+        } catch (error) {
+            throw new Error('failed finding the visibilty of the locater: ' + selector + '\nwith error : ' + error);
+        }
+    }
+
     async reloadPage(nextSelector: string) {
         await this.page.reload();
         await this.waitForSelector(nextSelector);
@@ -117,4 +117,15 @@ export class utils {
     async sleep(dealyInSeconds: number) {
         await this.page.waitForTimeout(dealyInSeconds * 1000);
     }
+
+    async setTimeout(timeoutInSeconds: number, call: (args: void) => Promise<boolean>) {
+        var startTime = Date.now();
+        while ((Date.now() - startTime) < timeoutInSeconds * 1000) {
+            if (await call()) {
+                return true;
+            }
+        }
+
+        return false;
+    };
 }

@@ -32,7 +32,7 @@ export class repoPage {
             throw new Error(errorMessage);
         }
 
-        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab);
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.createRepoButton), repoPageSelectors.codeTab);
     }
 
     /**
@@ -48,10 +48,10 @@ export class repoPage {
      * redirect to pofile page => overview tab
     */
     async deleteRepo(accountName: string, repoName: string): Promise<void> {
-        let deleteButton = await this.utils.getByRole('button', repoPageData.deleteButtonText);
+        let deleteButton = await this.utils.getByRole('button', repoPageSelectors.deleteButtonText);
         await this.utils.click(deleteButton, repoPageSelectors.deleteConfirmationLabel);
         await this.utils.fill(repoPageSelectors.deleteConfirmationLabel, accountName + '/' + repoName, repoPageSelectors.deleteConfirmationLabel)
-        let deleteLabel = await this.utils.getByText(repoPageData.deleteLabelTest);
+        let deleteLabel = await this.utils.getByText(repoPageSelectors.deleteLabelTest);
 
         await this.utils.click(deleteLabel, profilePageSelectors.repoButton);
     }

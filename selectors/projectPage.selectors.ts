@@ -6,5 +6,5 @@ export const projectPageSelectors =
     projectSettingsButton: '[data-test-id="project-settings-button"]',
     projectDeleteButton: '[data-test-id="delete-project-button"]',
     projectConfirmDeleteInput: '[data-test-id="confirm-delete-input"]',
-    deleteButtonText: 'I understand the consequences, delete this project'
+    deleteButtonText: /.*(I understand the consequences)/
 }

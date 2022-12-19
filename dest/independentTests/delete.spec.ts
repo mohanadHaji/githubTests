@@ -39,7 +39,7 @@ test.describe('delete repo', () => {
     });
 
     test('deleting repo', async () => {
-        await repoPage.clickDeletePage(repoPageSelectors.settingsTab);
+        await repoPage.clickSettingsTab();
         await repoPage.deleteRepo(commonData.accountName, repoName);
         
         await util.sleep(5);
