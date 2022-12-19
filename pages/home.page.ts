@@ -14,7 +14,7 @@ export default class homePage {
     }
 
     async loadHomePage(): Promise<void> {
-        await this.utils.goto(commonData.gitHubUrl, homePageSelectors.feedbackButton, operations.visible);
+        await this.utils.goto(commonData.gitHubUrl, homePageSelectors.feedbackButton);
     }
 
     async clickHomePage(githubSvhSelector: string = homePageSelectors.githubSvg) {
