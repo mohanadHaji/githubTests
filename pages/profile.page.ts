@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { repoPageData } from "../Data/repoPage.data";
 import { factory } from "../factory";
 import { homePageSelectors } from "../selectors/homePage.selectors";
 import { profilePageSelectors } from "../selectors/profilePage.selectors";
@@ -19,7 +18,7 @@ export class profilePage {
      */
     async clickProfilePage(): Promise<void> {
         await this.utils.click(homePageSelectors.userAvatar, homePageSelectors.signoutButton);
-        await this.utils.click(repoPageData.yourProfileText, profilePageSelectors.repoButton);
+        await this.utils.click(homePageSelectors.yourProfileText, profilePageSelectors.repoButton);
     }
 
     /**

@@ -1,6 +1,5 @@
 import { Page } from "@playwright/test";
 import { commonData } from "../Data/common.data";
-import { operations } from "../enums/operations.enum";
 import { factory } from "../factory";
 import { homePageSelectors } from "../selectors/homePage.selectors";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";

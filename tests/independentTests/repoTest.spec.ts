@@ -8,7 +8,6 @@ import { commonData } from '../../Data/common.data';
 import { profilePage } from '../../pages/profile.page';
 import homePage from '../../pages/home.page';
 import { repoPageSelectors } from '../../selectors/repoPage.selectors';
-import { profilePageSelectors } from '../../selectors/profilePage.selectors';
 import { projectPageData } from '../../Data/projectsPage.data';
 import { projectPage } from '../../pages/project.page';
 import { homePageSelectors } from '../../selectors/homePage.selectors';

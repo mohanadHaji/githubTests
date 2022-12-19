@@ -1,4 +1,4 @@
-import { test, expect, Page, BrowserContext } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { signinPageData } from '../../Data/signinPage.data';
 import { factory } from '../../factory';
 import homePage from '../../pages/home.page';
