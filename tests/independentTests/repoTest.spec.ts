@@ -9,6 +9,9 @@ import { profilePage } from '../../pages/profile.page';
 import homePage from '../../pages/home.page';
 import { repoPageSelectors } from '../../selectors/repoPage.selectors';
 import { profilePageSelectors } from '../../selectors/profilePage.selectors';
+import { projectPageData } from '../../Data/projectsPage.data';
+import { projectPage } from '../../pages/project.page';
+import { homePageSelectors } from '../../selectors/homePage.selectors';
 
 test.describe('create repo tests', () => {
     let page: Page;
@@ -16,6 +19,7 @@ test.describe('create repo tests', () => {
     let profilePage: profilePage
     let util: utils;
     let homePage: homePage
+    let projectPage: projectPage;
 
     let previousNumberOfRepo: number;
     
@@ -28,6 +32,7 @@ test.describe('create repo tests', () => {
         profilePage = factory.initProfilePage(page);
         util = factory.initUtils(page);
         homePage = factory.initHomePage(page);
+        projectPage = factory.initProjectsPage(page);
     });
 
     test.beforeEach(async ()=>{
@@ -57,12 +62,31 @@ test.describe('create repo tests', () => {
         await repoPage.deleteRepo(commonData.accountName, repoName);
     });
 
+    test('link project to repo',async () => {
+        let projectName = projectPageData.projectName + uuid();
+        await profilePage.clickProfilePage();
+        await profilePage.clickProjectsSectionLink();
+        await profilePage.clickCreateProject();
+        await projectPage.closePopWindow();
+        await projectPage.renameProject(projectName);
+        await homePage.clickHomePage(homePageSelectors.githubSvgInProjectPage);
+
+        const guid: string = uuid();
+        var repoName = repoPageData.newRepoName + guid;
+        await homePage.clickCreateRepoPage();
+        await repoPage.createRepo(repoName, repoPageData.descrption);
+        await repoPage.clickProjectTab();
+        await repoPage.linkProject(projectName);
+
+        expect(await util.getByText(projectName)).toBeVisible()
+    });
+
     test.afterEach(async () => {
         await util.sleep(7);
         await profilePage.clickProfilePage();
         await profilePage.clickReposTab();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
-        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 2);
+        expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 3);
     })
     test.afterAll(async () => {
         await page.close();

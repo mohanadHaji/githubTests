@@ -17,8 +17,8 @@ export default class homePage {
         await this.utils.goto(commonData.gitHubUrl, homePageSelectors.feedbackButton, operations.visible);
     }
 
-    async clickHomePage() {
-        await this.utils.click(homePageSelectors.githubSvg, homePageSelectors.feedbackButton);
+    async clickHomePage(githubSvhSelector: string = homePageSelectors.githubSvg) {
+        await this.utils.click(githubSvhSelector, homePageSelectors.feedbackButton);
     }
 
     async clickCreateRepoPage()
