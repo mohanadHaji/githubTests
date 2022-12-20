@@ -36,16 +36,16 @@ test.describe('create repo tests', () => {
 
     test.beforeEach(async () => {
         await homePage.loadHomePage();
-        await profilePage.clickProfilePage();
-        await profilePage.clickReposTab();
+        await profilePage.clickProfilePageButton();
+        await profilePage.clickReposTabButton();
         previousNumberOfRepo = await profilePage.getNumberOfRepos();
-        await homePage.clickHomePage();
+        await homePage.clickHomePageButton();
     });
 
     test('create new repo', async () => {
         const guid: string = uuid();
         var repoName = repoPageData.newRepoName + guid;
-        await homePage.clickCreateRepoPage();
+        await homePage.clickCreateRepoPageButton();
         await repoPage.createRepo(repoName, repoPageData.descrption);
         await expect(page).toHaveURL(new RegExp(repoName));
     });
@@ -54,27 +54,27 @@ test.describe('create repo tests', () => {
         const guid: string = uuid();
         var repoName = repoPageData.newRepoName + guid;
 
-        await homePage.clickCreateRepoPage();
+        await homePage.clickCreateRepoPageButton();
         await repoPage.createRepo(repoName);
 
-        await repoPage.clickSettingsTab();
+        await repoPage.clickSettingsTabButton();
         await repoPage.deleteRepo(commonData.accountName, repoName);
     });
 
     test('link project to repo', async () => {
         let projectName = projectPageData.projectName + uuid();
-        await profilePage.clickProfilePage();
+        await profilePage.clickProfilePageButton();
         await profilePage.clickProjectsSectionLink();
-        await profilePage.clickCreateProject();
-        await projectPage.closePopWindow();
+        await profilePage.clickCreateProjectButton();
+        await projectPage.closePopWindowButton();
         await projectPage.renameProject(projectName);
-        await homePage.clickHomePage(homePageSelectors.githubSvgInProjectPage);
+        await homePage.clickHomePageButton(homePageSelectors.githubSvgInProjectPage);
 
         const guid: string = uuid();
         var repoName = repoPageData.newRepoName + guid;
-        await homePage.clickCreateRepoPage();
+        await homePage.clickCreateRepoPageButton();
         await repoPage.createRepo(repoName, repoPageData.descrption);
-        await repoPage.clickProjectTab();
+        await repoPage.clickProjectTabButton();
         await repoPage.linkProject(projectName);
 
         expect(await util.getByText(projectName)).toBeVisible()
@@ -82,7 +82,7 @@ test.describe('create repo tests', () => {
 
     test('test clone url', async () => {
         var repoName = repoPageData.newRepoName + uuid();
-        await homePage.clickCreateRepoPage();
+        await homePage.clickCreateRepoPageButton();
         await repoPage.createRepo(repoName, repoPageData.descrption);
         let cloneUrl = await repoPage.getRepoCloneLink();
         expect(cloneUrl).toBe(commonData.gitHubUrl + '/' + commonData.accountName + '/' + repoName + '.git')
@@ -91,9 +91,9 @@ test.describe('create repo tests', () => {
     test('rename repo', async () => {
         var repoName = repoPageData.newRepoName + uuid();
         var repoRename = repoPageData.renameRepoName + uuid();
-        await homePage.clickCreateRepoPage();
+        await homePage.clickCreateRepoPageButton();
         await repoPage.createRepo(repoName, repoPageData.descrption);
-        await repoPage.clickSettingsTab();
+        await repoPage.clickSettingsTabButton();
         await repoPage.renameRepo(repoRename);
 
         await expect(page).toHaveURL(new RegExp(repoRename))
@@ -101,21 +101,21 @@ test.describe('create repo tests', () => {
 
     test('change privacy to private', async () => {
         var repoName = repoPageData.newRepoName + uuid();
-        await homePage.clickCreateRepoPage();
+        await homePage.clickCreateRepoPageButton();
         await repoPage.createRepo(repoName, repoPageData.descrption);
 
-        await repoPage.clickSettingsTab();
+        await repoPage.clickSettingsTabButton();
         await repoPage.changeRepoVisibility();
 
-        await util.click(await util.getByText(repoPageSelectors.ChangeVisibilityButtonText), await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex));
-        await expect(await util.getByText(repoPageSelectors.ChangeVisibilityToButtonRegex)).toHaveText(repoPageData.changeToPublicText)
-        await util.click(await util.getByText(repoPageSelectors.ChangeVisibilityButtonText), repoPageSelectors.renameField);
+        await util.click(await util.getByText(repoPageSelectors.settingsTab.ChangeVisibilityButtonText), await util.getByText(repoPageSelectors.settingsTab.ChangeVisibilityToButtonRegex));
+        await expect(await util.getByText(repoPageSelectors.settingsTab.ChangeVisibilityToButtonRegex)).toHaveText(repoPageData.changeToPublicText)
+        await util.click(await util.getByText(repoPageSelectors.settingsTab.ChangeVisibilityButtonText), repoPageSelectors.settingsTab.renameField);
     });
 
     test.afterEach(async () => {
         await util.sleep(7);
-        await profilePage.clickProfilePage();
-        await profilePage.clickReposTab();
+        await profilePage.clickProfilePageButton();
+        await profilePage.clickReposTabButton();
         let currentNumberOfRepo: number = await profilePage.getNumberOfRepos();
         expect(currentNumberOfRepo).toBeLessThan(previousNumberOfRepo + 5);
     });

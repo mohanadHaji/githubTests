@@ -33,7 +33,7 @@ test.describe.serial('signin', () => {
     });
 
     test('test signin functionality', async () => {
-        await mainPage.clickSigninPage();
+        await mainPage.clickSigninPageButton();
         await signinPage.signin(signinPageData.email, signinPageData.password);
         
         await expect(page).toHaveTitle('GitHub');

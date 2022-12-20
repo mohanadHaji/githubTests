@@ -25,7 +25,7 @@ export class mainPage
      * expect to be in main page.
      * redirect to sign in page.
      */
-    async clickSigninPage(): Promise<void> {
+    async clickSigninPageButton(): Promise<void> {
         await this.utils.click(await this.utils.getByText(mainPageSelectors.siginInButtonText), mainPageSelectors.userLoginField);
     }
 }

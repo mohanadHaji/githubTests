@@ -12,7 +12,10 @@ export class projectPage
         this.utils = factory.initUtils(page);
     }
 
-    async closePopWindow() {
+    /**
+     * expect to be in create new project page with the popout window open to click create button
+     */
+    async closePopWindowButton() {
         await this.utils.click(projectPageSelectors.popoutWindoCreateButton, projectPageSelectors.projectTitle);
     }
 
@@ -30,7 +33,7 @@ export class projectPage
      * expect to be in project page.
      * redirect to settings tab in project page.
      */
-    async clickProjectSettings() {
+    async clickProjectSettingsButton() {
         await this.utils.click(projectPageSelectors.projectMenuButton, projectPageSelectors.projectSettingsButton)
         await this.utils.click(projectPageSelectors.projectSettingsButton, projectPageSelectors.projectDeleteButton);
     }

@@ -25,7 +25,7 @@ export default class homePage {
      * redirect you from anywhere in code to home page
      * @param githubSvhSelector send the svg selector in case it changed on some pages (like in project page a space was added at the end of the selector)
      */
-    async clickHomePage(githubSvhSelector: string = homePageSelectors.githubSvg) {
+    async clickHomePageButton(githubSvhSelector: string = homePageSelectors.githubSvg) {
         await this.utils.click(githubSvhSelector, homePageSelectors.feedbackButton);
     }
 
@@ -33,8 +33,8 @@ export default class homePage {
      * expect to be in home page.
      * redirect you to create new repo page.
      */
-    async clickCreateRepoPage()
+    async clickCreateRepoPageButton()
     {
-        this.utils.click(await this.utils.getByText(homePageSelectors.createNewRepoText), repoPageSelectors.newRepoNameSelector);
+        this.utils.click(await this.utils.getByText(homePageSelectors.createNewRepoText), repoPageSelectors.newRepoSelectors.newRepoNameSelector);
     }
 }

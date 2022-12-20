@@ -16,7 +16,7 @@ export class profilePage {
     /**
      * redirect to profile page from any where.
      */
-    async clickProfilePage(): Promise<void> {
+    async clickProfilePageButton(): Promise<void> {
         await this.utils.click(homePageSelectors.userAvatar, homePageSelectors.signoutButton);
         await this.utils.click(homePageSelectors.yourProfileText, profilePageSelectors.repoButton);
     }
@@ -25,20 +25,8 @@ export class profilePage {
      * expect to be in profile page.
      * redirect to repos tab in profile page.
      */
-    async clickReposTab(): Promise<void>
-    {
+    async clickReposTabButton(): Promise<void> {
         await this.utils.click(profilePageSelectors.repoButton, profilePageSelectors.repoSearchButton);
-    }
-    
-    /**
-     * expect to be in repos tab.
-     * redirect to repo page.
-     * @param accountName current signed into account.
-     * @param repoName repo name to be clicked.
-     */
-    async clickRepo(accountName : string, repoName: string)
-    {
-        await this.utils.click(this.utils.format(profilePageSelectors.repoPageLink, [accountName, repoName]), repoPageSelectors.codeTab)
     }
 
     /**
@@ -62,7 +50,7 @@ export class profilePage {
      * expect to be in projects tab under profile page.
      * redirect to project page
      */
-    async clickCreateProject(): Promise<void> {
+    async clickCreateProjectButton(): Promise<void> {
         await this.utils.click(await this.utils.getByRole('button', profilePageSelectors.newProjectText), projectPageSelectors.popoutWindoCreateButton);
     }
 
@@ -72,6 +60,6 @@ export class profilePage {
      */
     async getNumberOfProjects(): Promise<number> {
         let numberLocator: Locator = await this.utils.getByRole('link', profilePageSelectors.numberOfProjectsRegx);
-        return +(await numberLocator.innerText()).replace(/[^0-9]/g,'');
+        return +(await numberLocator.innerText()).replace(/[^0-9]/g, '');
     }
 }

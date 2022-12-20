@@ -29,11 +29,11 @@ test.describe('projects tests', () => {
     });
 
     test.beforeEach(async () => {
-        await profilePage.clickProfilePage();
+        await profilePage.clickProfilePageButton();
         await profilePage.clickProjectsSectionLink();
         previousNumberOfProject = await profilePage.getNumberOfProjects();
-        await profilePage.clickCreateProject();
-        await projectPage.closePopWindow();
+        await profilePage.clickCreateProjectButton();
+        await projectPage.closePopWindowButton();
     })
 
     test('create a porject test', async () => {
@@ -44,13 +44,13 @@ test.describe('projects tests', () => {
     test('delete a project test', async () => {
         let projectName = projectPageData.projectName + uuid();
         await projectPage.renameProject(projectName);
-        await projectPage.clickProjectSettings();
+        await projectPage.clickProjectSettingsButton();
         await projectPage.deleteProject(projectName);
     });
 
     test.afterEach(async () => {
         await util.sleep(5);
-        await profilePage.clickProfilePage()
+        await profilePage.clickProfilePageButton()
         await profilePage.clickProjectsSectionLink();
         expect(await profilePage.getNumberOfProjects()).toBeLessThan(previousNumberOfProject+4); 
     })
