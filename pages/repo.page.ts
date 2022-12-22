@@ -2,7 +2,6 @@ import { Page } from "@playwright/test";
 import { utils } from "../Utils/utils";
 import { factory } from "../factory";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";
-import { repoPageData } from "../Data/repoPage.data";
 import { profilePageSelectors } from "../selectors/profilePage.selectors";
 
 export class repoPage {
@@ -17,14 +16,14 @@ export class repoPage {
      * redirect to repo page => code tab
     */
     async createRepo(repoName: string, desciption?: string, isPublic: boolean = true): Promise<void> {
-        await this.utils.fill(repoPageSelectors.newRepoNameSelector, repoName, repoPageSelectors.newRepoNameSelector);
+        await this.utils.fill(repoPageSelectors.newRepoSelectors.newRepoNameSelector, repoName, repoPageSelectors.newRepoSelectors.newRepoNameSelector);
 
         if (desciption != null) {
-            await this.utils.fill(repoPageSelectors.repository_description, desciption, repoPageSelectors.repository_description);
+            await this.utils.fill(repoPageSelectors.newRepoSelectors.repository_description, desciption, repoPageSelectors.newRepoSelectors.repository_description);
         }
 
-        let repoVisibilitySelector = isPublic ? repoPageSelectors.repository_visibility_public : repoPageSelectors.repository_visibility_private
-        await this.utils.click(repoVisibilitySelector, repoPageSelectors.repository_visibility_public)
+        let repoVisibilitySelector = isPublic ? repoPageSelectors.newRepoSelectors.repository_visibility_public : repoPageSelectors.newRepoSelectors.repository_visibility_private
+        await this.utils.click(repoVisibilitySelector, repoPageSelectors.newRepoSelectors.repository_visibility_public)
 
         if (!await this.utils.isLocatorChecked(repoVisibilitySelector)) {
             let errorMessage : string = 'repo visibilty (' + repoVisibilitySelector + ') is not checked correctly'
@@ -32,15 +31,15 @@ export class repoPage {
             throw new Error(errorMessage);
         }
 
-        await this.utils.click(repoPageSelectors.createRepoButton, repoPageSelectors.codeTab);
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.newRepoSelectors.createRepoButton), repoPageSelectors.codeTab);
     }
 
     /**
      * expect to be in code tab
      * redirect to settings tab
     */
-    async clickSettingsTab(): Promise<void> {
-        await this.utils.click(repoPageSelectors.settingsTab, repoPageSelectors.renameField)
+    async clickSettingsTabButton(): Promise<void> {
+        await this.utils.click(repoPageSelectors.settingsTab.settingsTab, repoPageSelectors.settingsTab.renameField)
     }
 
     /**
@@ -48,10 +47,10 @@ export class repoPage {
      * redirect to pofile page => overview tab
     */
     async deleteRepo(accountName: string, repoName: string): Promise<void> {
-        let deleteButton = await this.utils.getByRole('button', repoPageData.deleteButtonText);
-        await this.utils.click(deleteButton, repoPageSelectors.deleteConfirmationLabel);
-        await this.utils.fill(repoPageSelectors.deleteConfirmationLabel, accountName + '/' + repoName, repoPageSelectors.deleteConfirmationLabel)
-        let deleteLabel = await this.utils.getByText(repoPageData.deleteLabelTest);
+        let deleteButton = await this.utils.getByRole('button', repoPageSelectors.settingsTab.deleteButtonText);
+        await this.utils.click(deleteButton, repoPageSelectors.settingsTab.deleteConfirmationLabel);
+        await this.utils.fill(repoPageSelectors.settingsTab.deleteConfirmationLabel, accountName + '/' + repoName, repoPageSelectors.settingsTab.deleteConfirmationLabel)
+        let deleteLabel = await this.utils.getByText(repoPageSelectors.settingsTab.deleteLabelTest);
 
         await this.utils.click(deleteLabel, profilePageSelectors.repoButton);
     }
@@ -60,18 +59,18 @@ export class repoPage {
      * expect to be in code tab
      * redirect to project tab
     */ 
-    async clickProjectTab(): Promise<void> {
-        await this.utils.click(repoPageSelectors.projectTab, repoPageSelectors.linkOrAddProjectButton);
+    async clickProjectTabButton(): Promise<void> {
+        await this.utils.click(repoPageSelectors.settingsTab.projectTab, repoPageSelectors.settingsTab.linkOrAddProjectButton);
     }
 
     /**
      * expect to be in project tab
     */
     async linkProject(projectName: string): Promise<void> {
-        await this.utils.click(repoPageSelectors.linkOrAddProjectButton, repoPageSelectors.searhForProjectButton);
-        await this.utils.fill(repoPageSelectors.searhForProjectButton, projectName, repoPageSelectors.searhForProjectButton);
-        await this.utils.click(await this.utils.getByText(projectName), repoPageSelectors.linkOrAddProjectButton);
-        await this.utils.click(repoPageSelectors.linkOrAddProjectButton, repoPageSelectors.linkOrAddProjectButton);
+        await this.utils.click(repoPageSelectors.settingsTab.linkOrAddProjectButton, repoPageSelectors.settingsTab.searhForProjectButton);
+        await this.utils.fill(repoPageSelectors.settingsTab.searhForProjectButton, projectName, repoPageSelectors.settingsTab.searhForProjectButton);
+        await this.utils.click(await this.utils.getByText(projectName), repoPageSelectors.settingsTab.linkOrAddProjectButton);
+        await this.utils.click(repoPageSelectors.settingsTab.linkOrAddProjectButton, repoPageSelectors.settingsTab.linkOrAddProjectButton);
     }
 
     /**
@@ -87,7 +86,20 @@ export class repoPage {
       * redirect to repo code tab
     */
     async renameRepo(newName: string): Promise<void> {
-        await this.utils.fill(repoPageSelectors.renameField, newName, repoPageSelectors.renameField)
-        await this.utils.click(await this.utils.getByText(repoPageSelectors.renameButtonText), repoPageSelectors.cloneUrlLoctors);
+        await this.utils.fill(repoPageSelectors.settingsTab.renameField, newName, repoPageSelectors.settingsTab.renameField)
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.settingsTab.renameButtonText), repoPageSelectors.cloneUrlLoctors);
+    }
+
+    /**
+     * expect to be in settinfs tab
+     * satys in settings tab after changing
+     */
+    async changeRepoVisibility() {
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.settingsTab.ChangeVisibilityButtonText), await this.utils.getByText(repoPageSelectors.settingsTab.ChangeVisibilityToButtonRegex))
+        await this.utils.click(await this.utils.getByText(repoPageSelectors.settingsTab.ChangeVisibilityToButtonRegex), repoPageSelectors.settingsTab.ChangeRepoConfirmButton);
+
+        await this.utils.click(repoPageSelectors.settingsTab.ChangeRepoConfirmButton, repoPageSelectors.settingsTab.ChangeRepoConfirmButton);        
+        await this.utils.click(repoPageSelectors.settingsTab.ChangeRepoConfirmButton, repoPageSelectors.settingsTab.ChangeRepoConfirmButton);
+        await this.utils.click(repoPageSelectors.settingsTab.ChangeRepoConfirmButton, repoPageSelectors.settingsTab.renameField);
     }
 }

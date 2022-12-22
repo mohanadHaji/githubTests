@@ -1,6 +1,5 @@
 import { Page } from "@playwright/test";
 import { commonData } from "../Data/common.data";
-import { operations } from "../enums/operations.enum";
 import { factory } from "../factory";
 import { homePageSelectors } from "../selectors/homePage.selectors";
 import { repoPageSelectors } from "../selectors/repoPage.selectors";
@@ -13,16 +12,29 @@ export default class homePage {
         this.utils = factory.initUtils(page);
     }
 
+    /**
+     * expect to be signed in.
+     * load home page using url.
+     * redirect to home page.
+     */
     async loadHomePage(): Promise<void> {
         await this.utils.goto(commonData.gitHubUrl, homePageSelectors.feedbackButton);
     }
 
-    async clickHomePage(githubSvhSelector: string = homePageSelectors.githubSvg) {
+    /**
+     * redirect you from anywhere in code to home page
+     * @param githubSvhSelector send the svg selector in case it changed on some pages (like in project page a space was added at the end of the selector)
+     */
+    async clickHomePageButton(githubSvhSelector: string = homePageSelectors.githubSvg) {
         await this.utils.click(githubSvhSelector, homePageSelectors.feedbackButton);
     }
 
-    async clickCreateRepoPage()
+    /**
+     * expect to be in home page.
+     * redirect you to create new repo page.
+     */
+    async clickCreateRepoPageButton()
     {
-        this.utils.click(await this.utils.getByText(homePageSelectors.createNewRepoText), repoPageSelectors.newRepoNameSelector);
+        this.utils.click(await this.utils.getByText(homePageSelectors.createNewRepoText), repoPageSelectors.newRepoSelectors.newRepoNameSelector);
     }
 }
